@@ -58,6 +58,7 @@ class Pasajeros {
         $response = file_get_contents('https://sheetdb.io/api/v1/m1ndozccoo56f?sheet=BD-Pasajeros');
         return $response;
     }
+    
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -87,31 +88,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
     <style>
         .formulario{
-            margin: 50px;
+         margin: 50px;
 	     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 	     padding: 25px;
 	     border-radius: 20px;
-	    
 	     background-color: #f4f6f6;
         }
         .formulario label {
-
-         padding-top: 20px;
-        margin-bottom: 20px;
+          padding-top: 20px;
+          margin-bottom: 20px;
         }
         .tabla{
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-	padding: 25px;
-	border-radius: 14px;
-    margin: 50px; 
+           box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+	       padding: 25px;
+	       border-radius: 14px;
+           margin: 50px; 
     }
     .center {
-            text-align: center;
-        }
+       text-align: center;
+    }
 
     </style>
 </head>
@@ -133,23 +134,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     <label>Gmail:</label>
     <input type="text" name="gmail" placeholder="Ingresa tu correo" required>
+
     <label>Ruta</label>
-    <select name="ruta">
+    <select name="ruta" id="ruta" onchange="actualizarCostoPasaje()">
     <?php
-        include_once './rutas.php'; // Corregido el nombre del archivo a incluir
-
-        $rutas = new Rutas(null, null, null, null, null);
-        $response = $rutas->get_rutas();
-
-        $data = json_decode($response, true);
-        foreach($data as $row){
-            echo "<option value='".$row['ruta']."'>".$row['ruta']."</option>";
-        }
+    include_once './rutas.php';
+    $rutas = new Rutas(null, null, null, null, null);
+    $response = $rutas->get_rutas();
+    $data = json_decode($response, true);
+    foreach($data as $row){
+        $costo_pasaje = str_replace('$', '', $row['costoPasaje']); // Elimina el $
+        echo "<option value='".$row['ruta']."' data-costo='".$costo_pasaje."'>".$row['ruta']."</option>";
+    }
+    
     ?>
-</select>
+</select><br>
+
+     <label>Costo del pasaje</label>
+     <input placeholder="Seleccione una ruta" type="text" id="costoPasaje" readonly >
     
     <label>Desde</label>
-    <select name="desde">
+<select name="desde">
     <?php
         include_once './rutas.php'; //  el nombre del archivo a incluir
 
@@ -176,26 +181,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
     ?>
 </select>
-<label>Número de reservas:</label>
-    <input type="number" name="num_reserva" placeholder="Número de reservas">
+    <label>Número de reservas:</label>
+    <input type="number" name="num_reserva" id="numReserva" placeholder="Número de reservaciones" onchange="actualizarTotal()">
+
 
     <label>Fecha:</label>
     <input type="date" name="date">
 
-   <!--  <label>Desde:</label>
-    <input type="text" name="desde" placeholder="Ingresa el punto de partida"> -->
-
-<!--     <label>Hasta:</label>
-    <input type="text" name="hasta" placeholder="Ingresa tu destino"> -->
-
-
     <label>Total:</label>
-    <input type="text" name="total" placeholder="Precio a pagar">
-<input type="submit" value="Aceptar" class="btn btn-success">
+    <input type="text"  id="total"  placeholder="Añada cantidad reservas" readonly>
+    
+    <input type="submit" value="Aceptar" class="btn btn-success">
 
    
    </form>
-
+   
+   
+<!-- Tabla para mostrar las reservaciones realizadas -->
    <div class="tabla">
     <h2 class="text-center">Lista de reservaciones</h2>
 
@@ -209,7 +211,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Gmail</th>
-          
             <th>Número de reservas</th>
             <th>Total</th>
         </tr>
@@ -238,5 +239,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         ?>
     </table>
    </div>
+
+
+  <!--JavaScript para mostrarel costo del pasaje según la ruta seleccionada-->
+  <script>
+    function actualizarCostoPasaje() {
+        var select = document.getElementById('ruta');
+        var selectedOption = select.options[select.selectedIndex];
+        var costoPasaje = selectedOption.getAttribute('data-costo');// Obtener el costo del pasaje
+        document.getElementById('costoPasaje').value = costoPasaje;
+        actualizarTotal();
+    }
+ 
+    /*     multiplicar el costo del pasaje por el número de reservas */
+    function actualizarTotal() {
+        var costoPasaje = parseFloat(document.getElementById('costoPasaje').value);
+        var numReserva = parseInt(document.getElementById('numReserva').value);
+        var total = costoPasaje * numReserva;
+        document.getElementById('total').value = total;
+    }
+
+
+
+   </script>
 </body>
 </html>
