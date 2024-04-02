@@ -14,6 +14,6 @@ Otra funcionalidad es hacer reservaciones, en donde se solicitan los siguientes 
 * Fecha en la que va a viajar
 * Punto de partida
 * Destino
-* Total a pagar (Este valor se genera automáticamente  a partir de la multiplicación del costo de pasaje de la ruta que reserva por el número de asientos reservados)
+* Total a pagar (Este valor se genera automáticamente  a partir de la multiplicación del costo de pasaje de la ruta que reserva por el número de asientos seleccionados)
 
  Cuando ya hemos hecho clic en el boton para aceptar (confirmar la reservación) se envía un email automático a la dirección registrada, indicando el total a pagar por la reservación hecha.
