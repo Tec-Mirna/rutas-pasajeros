@@ -1,6 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
 <head>
+<?php include 'pasajero.php'; ?>
+
 <title>Reservación exitosa!</title>
 <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -136,7 +138,9 @@ table {
                     <tr>
                       <td align="left" style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 25px; color: #2C3E50;"> Su reservación se ha realizado exitosamente, gracias por preferirnos.🤗<br>
                         <br>
-                       El valor a cancelar es de: <br>
+                      
+                        El valor a cancelar es de: $ <?php echo $total; ?>
+                        <br>
                         <br>
                        Le deseamos un feliz viaje.</td>
                     </tr>
@@ -146,11 +150,7 @@ table {
             </table></td>
         </tr>
       </table>
-      <!--[if (gte mso 9)|(IE)]>
-      </td>
-      </tr>
-      </table>
-      <![endif]-->
+     
     </td>
   </tr>
   <tr>

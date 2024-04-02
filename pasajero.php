@@ -1,24 +1,27 @@
 <?php
  include_once './rutas.php';
 
+
 class Pasajeros {
     public $id;
     public $nombre;
     public $apellido;
     public $gmail;
      public $ruta; 
+     public $costoPasaje;
     public $num_reservaciones;
     public $fecha;
     public $desde;
     public $hasta;
     public $total;
 
-    public function __construct($id, $nombre, $apellido, $gmail,  $ruta, $num_reservaciones, $fecha, $desde, $hasta, $total){
+    public function __construct($id, $nombre, $apellido, $gmail,  $ruta, $costoPasaje, $num_reservaciones, $fecha, $desde, $hasta, $total){
         $this->id = $id;
         $this->nombre = $nombre;
         $this->apellido = $apellido;
         $this->gmail = $gmail;
        $this->ruta = $ruta; 
+       $this->costoPasaje = $costoPasaje;
         $this->num_reservaciones = $num_reservaciones;
         $this->fecha = $fecha;
         $this->desde = $desde;
@@ -35,6 +38,7 @@ class Pasajeros {
             'apellido' => $this->apellido,
             'gmail'=> $this->gmail,
             'ruta'=> $this->ruta,
+            'costoPasaje'=> $this->costoPasaje,
             'num_reservaciones'=> $this->num_reservaciones,
             'fecha'=>$this->fecha,
             'desde'=>$this->desde,
@@ -53,6 +57,9 @@ class Pasajeros {
         curl_close($ch);
         echo $response;
     }  
+
+
+    
     //GET
     public function get_pasajeros(){
         $response = file_get_contents('https://sheetdb.io/api/v1/m1ndozccoo56f?sheet=BD-Pasajeros');
@@ -68,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $apellido =$_POST['lastname'];
     $gmail = $_POST['gmail'];
     $ruta = $_POST['ruta'];
+    $costoPasaje = $_POST['costoPasaje'];
     $num_reservaciones = $_POST['num_reserva'];
     $fecha = $_POST['date'];
     $desde = $_POST['desde'];
@@ -75,10 +83,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $total = $_POST['total'];
 
     // Crear una instancia de la clase Rutas con los datos del formulario
-    $pasajero = new Pasajeros($id, $nombre, $apellido, $gmail, $ruta, $num_reservaciones, $fecha, $desde, $hasta, $total);
+    $pasajero = new Pasajeros($id, $nombre, $apellido, $gmail, $ruta, $costoPasaje, $num_reservaciones, $fecha, $desde, $hasta, $total);
     
     $pasajero->crearReservacion();
-}
+
+} include_once './email.php';
+
 
 ?>
 <!DOCTYPE html>
@@ -151,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 </select><br>
 
      <label>Costo del pasaje</label>
-     <input placeholder="Seleccione una ruta" type="text" id="costoPasaje" readonly >
+     <input placeholder="Seleccione una ruta" name="costoPasaje" type="text" id="costoPasaje" readonly >
     
     <label>Desde</label>
 <select name="desde">
@@ -189,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     <input type="date" name="date">
 
     <label>Total:</label>
-    <input type="text"  id="total"  placeholder="Añada cantidad reservas" readonly>
+    <input type="text" name="total"  id="total"  placeholder="Añada cantidad reservas" readonly>
     
     <input type="submit" value="Aceptar" class="btn btn-success">
 
@@ -206,19 +216,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             <th>Id</th>
             <th>Fecha</th>
             <th>Ruta</th>
+            <th>Costo</th>
             <th>Desde</th>
             <th>Hasta</th>
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Gmail</th>
-            <th>Número de reservas</th>
+            <th>N° reservas</th>
             <th>Total</th>
         </tr>
 
         <?php
            include_once './pasajero.php';
 
-           $pasajeros = new Pasajeros(null, null, null, null, null, null, null, null, null, null);
+           $pasajeros = new Pasajeros(null, null, null, null, null, null, null, null, null, null, null);
            $response = $pasajeros->get_pasajeros();
 
            $data = json_decode($response, true);
@@ -228,6 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             echo "<td>".$row['id']."</td>";
             echo "<td>".$row['fecha']."</td>";
             echo "<td>".$row['ruta']."</td>";
+            echo "<td>".$row['costoPasaje']."</td>";
             echo "<td>".$row['desde']."</td>";
             echo "<td>".$row['hasta']."</td>";
             echo "<td>".$row['nombre']."</td>";
@@ -241,7 +253,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
    </div>
 
 
-  <!--JavaScript para mostrarel costo del pasaje según la ruta seleccionada-->
+
+   <!--JavaScript para mostrarel costo del pasaje según la ruta seleccionada-->
   <script>
     function actualizarCostoPasaje() {
         var select = document.getElementById('ruta');
@@ -256,9 +269,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         var costoPasaje = parseFloat(document.getElementById('costoPasaje').value);
         var numReserva = parseInt(document.getElementById('numReserva').value);
         var total = costoPasaje * numReserva;
-        document.getElementById('total').value = total;
+        document.getElementById('total').value = total.toFixed(2); // toFixed(2) = se muestre el punto y dos ceros seguido de un número entero
     }
-
+ 
 
 
    </script>
