@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
 <head>
-<?php include 'pasajero.php'; ?>
+<?php include_once 'pasajero.php'; ?>
 
 <title>Reservación exitosa!</title>
 <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
@@ -120,7 +120,7 @@ table {
               <tr>
                 <td align="center">
                 <a href="http://www.htmlemailcheck.com" title="Replace with your text" target="_blank">
-                	<img src="https://media.istockphoto.com/id/1268443118/es/vector/pasajeros-esperando-autob%C3%BAs-en-la-ciudad.jpg?s=612x612&w=0&k=20&c=OvK4L633WeUYfKKQEy1Aw_nmPfFH_OMHXEZXVypb4jM=" width="100%" border="0" style="display: block; border:0; width:100%; height:auto !important;" class="img-max">
+                	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZhIy5iqQbDwfjhjH7ybEa0P3Ymzz7J0Js5EbtBSJVYQ&s" width="100%" border="0" style="display: block; border:0; width:100%; height:auto !important;" class="img-max">
                 </a>
                 </td>
               </tr>
@@ -139,7 +139,7 @@ table {
                       <td align="left" style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 25px; color: #2C3E50;"> Su reservación se ha realizado exitosamente, gracias por preferirnos.🤗<br>
                         <br>
                       
-                        El valor a cancelar es de: $ <?php echo $total; ?>
+                        El valor a cancelar es de: $ <?php echo $total; ?> 
                         <br>
                         <br>
                        Le deseamos un feliz viaje.</td>

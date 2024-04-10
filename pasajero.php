@@ -200,6 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     <label>Total:</label>
     <input type="text" name="total"  id="total"  placeholder="Añada cantidad reservas" readonly>
+    <input type="hidden" name="totalHidden" id="totalHidden" value="">
     
     <input type="submit" value="Aceptar" class="btn btn-success">
 
@@ -270,6 +271,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         var numReserva = parseInt(document.getElementById('numReserva').value);
         var total = costoPasaje * numReserva;
         document.getElementById('total').value = total.toFixed(2); // toFixed(2) = se muestre el punto y dos ceros seguido de un número entero
+        
     }
  
 
