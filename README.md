@@ -19,4 +19,5 @@ Otra funcionalidad es hacer reservaciones, en donde se solicitan los siguientes 
  Cuando ya hemos hecho clic en el boton para aceptar (confirmar la reservación) se envía un email automático a la dirección registrada, indicando el total a pagar por la reservación hecha.
 ## Limitaciones
 * No se puede realizar el pago desde la app
+* No se puede restringir reservaciones
   
